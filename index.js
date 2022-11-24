@@ -21,6 +21,7 @@ const usedProductsBrand = client.db("usedProductsSell").collection("brands");
 // prettier-ignore
 const Hp = client.db("usedProductsSell").collection("productsDetails");
 const dell = client.db("usedProductsSell").collection("dell");
+const acer = client.db("usedProductsSell").collection("acer");
 
 app.get("/brands", async (req, res) => {
   try {
@@ -29,6 +30,7 @@ app.get("/brands", async (req, res) => {
   } catch {}
 });
 
+// hp data load
 app.get("/Hp/:id", async (req, res) => {
   try {
     const id = req.params.id;
@@ -38,6 +40,7 @@ app.get("/Hp/:id", async (req, res) => {
   } catch {}
 });
 
+// dell data load
 app.get("/Dell/:id", async (req, res) => {
   try {
     const id = req.params.id;
@@ -47,11 +50,12 @@ app.get("/Dell/:id", async (req, res) => {
   } catch {}
 });
 
-app.get("/productsDetails/:id", async (req, res) => {
+// acer data load
+app.get("/Acer/:id", async (req, res) => {
   try {
     const id = req.params.id;
-    const query = { _id: ObjectId(id) };
-    const result = await productDetails.findOne(query);
+    const query = { brandId: ObjectId(id) };
+    const result = await acer.find(query).toArray();
     res.send(result);
   } catch {}
 });
