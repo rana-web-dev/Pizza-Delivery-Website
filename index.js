@@ -7,6 +7,19 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+// db_name = sells
+// db_pass = euzu56pcJHRDuq94
+
+const { MongoClient, ServerApiVersion } = require('mongodb');
+const uri = "mongodb+srv://<username>:<password>@cluster0.a8e9r20.mongodb.net/?retryWrites=true&w=majority";
+const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
+client.connect(err => {
+  const collection = client.db("test").collection("devices");
+  // perform actions on the collection object
+  client.close();
+});
+
+
 app.get('/', (req, res) => {
     res.send('Resale Web Server is Running...');
 })
