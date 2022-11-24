@@ -11,14 +11,16 @@ app.use(express.json());
 
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.a8e9r20.mongodb.net/?retryWrites=true&w=majority`;
 
-// prettier-ignore
-const client = new MongoClient(uri, {useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1,
+const client = new MongoClient(uri, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  serverApi: ServerApiVersion.v1,
 });
-
+// prettier-ignore
 const usedProductsBrand = client.db("usedProductsSell").collection("brands");
-const productDetails = client
-  .db("usedProductsSell")
-  .collection("productsDetails");
+// prettier-ignore
+const Hp = client.db("usedProductsSell").collection("productsDetails");
+const dell = client.db("usedProductsSell").collection("dell");
 
 app.get("/brands", async (req, res) => {
   try {
@@ -27,11 +29,20 @@ app.get("/brands", async (req, res) => {
   } catch {}
 });
 
-app.get("/brands/:id", async (req, res) => {
+app.get("/Hp/:id", async (req, res) => {
   try {
     const id = req.params.id;
     const query = { brandId: ObjectId(id) };
-    const result = await productDetails.find(query).toArray();
+    const result = await Hp.find(query).toArray();
+    res.send(result);
+  } catch {}
+});
+
+app.get("/Dell/:id", async (req, res) => {
+  try {
+    const id = req.params.id;
+    const query = { brandId: ObjectId(id) };
+    const result = await dell.find(query).toArray();
     res.send(result);
   } catch {}
 });
