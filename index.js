@@ -25,12 +25,29 @@ const userInfo = client.db("usedProductsSell").collection("userInfo");
 
 // user save on database
 app.post('/users', async(req, res) => {
-  const user = req.body;
+  try {
+    const user = req.body;
   const result = await userInfo.insertOne(user);
   res.send(result);
+  } catch{}
 })
 
-// user info get from database
+// get admin from database
+app.get('/users/admin/:email', async (req, res) => {
+  const email = req.params.email;
+  const query = { email }
+  const user = await userInfo.findOne(query);
+  res.send({ isAdmin: user?.userType === 'admin' });
+})
+
+// get buyer from database
+app.get('/users/buyer/:email', async (req, res) => {
+  const email = req.params.email;
+  const query = { email }
+  const user = await userInfo.findOne(query);
+  res.send({ isBuyer: user?.userType === 'buyer' });
+})
+
 app.get("/brands", async (req, res) => {
   try {
     const brandsProducts = await usedProductsBrand.find({}).toArray();
