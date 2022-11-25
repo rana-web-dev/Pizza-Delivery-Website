@@ -23,13 +23,14 @@ const dell = client.db("usedProductsSell").collection("dell");
 const acer = client.db("usedProductsSell").collection("acer");
 const userInfo = client.db("usedProductsSell").collection("userInfo");
 
+// user save on database
 app.post('/users', async(req, res) => {
   const user = req.body;
   const result = await userInfo.insertOne(user);
   res.send(result);
 })
 
-
+// user info get from database
 app.get("/brands", async (req, res) => {
   try {
     const brandsProducts = await usedProductsBrand.find({}).toArray();
