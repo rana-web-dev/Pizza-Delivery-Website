@@ -18,10 +18,17 @@ const client = new MongoClient(uri, {
 });
 // prettier-ignore
 const usedProductsBrand = client.db("usedProductsSell").collection("brands");
-// prettier-ignore
 const Hp = client.db("usedProductsSell").collection("productsDetails");
 const dell = client.db("usedProductsSell").collection("dell");
 const acer = client.db("usedProductsSell").collection("acer");
+const userInfo = client.db("usedProductsSell").collection("userInfo");
+
+app.post('/users', async(req, res) => {
+  const user = req.body;
+  const result = await userInfo.insertOne(user);
+  res.send(result);
+})
+
 
 app.get("/brands", async (req, res) => {
   try {
