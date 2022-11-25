@@ -48,6 +48,14 @@ app.get('/users/buyer/:email', async (req, res) => {
   res.send({ isBuyer: user?.userType === 'buyer' });
 })
 
+// get buyer from database
+app.get('/users/buyer/:email', async (req, res) => {
+  const email = req.params.email;
+  const query = { email }
+  const user = await userInfo.findOne(query);
+  res.send({ isBuyer: user?.userType === 'buyer' });
+})
+
 app.get("/brands", async (req, res) => {
   try {
     const brandsProducts = await usedProductsBrand.find({}).toArray();
