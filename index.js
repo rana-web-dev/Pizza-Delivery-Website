@@ -23,38 +23,54 @@ const dell = client.db("usedProductsSell").collection("dell");
 const acer = client.db("usedProductsSell").collection("acer");
 const userInfo = client.db("usedProductsSell").collection("userInfo");
 
+app.post("/addProducts", async (req, res) => {
+  try {
+    const addProduct = req.body;
+    console(addProduct);
+  } catch {}
+});
+
 // user save on database
-app.post('/users', async(req, res) => {
+app.post("/users", async (req, res) => {
   try {
     const user = req.body;
-  const result = await userInfo.insertOne(user);
-  res.send(result);
-  } catch{}
+    const result = await userInfo.insertOne(user);
+    res.send(result);
+  } catch {}
+});
+
+// get all users from database
+app.get("/users", async(req, res) => {
+    const query = {};
+    const users = await userInfo.find(query).toArray();
+    res.send(users);
 })
+
+// 
 
 // get admin from database
-app.get('/users/admin/:email', async (req, res) => {
+app.get("/users/admin/:email", async (req, res) => {
   const email = req.params.email;
-  const query = { email }
+  const query = { email };
   const user = await userInfo.findOne(query);
-  res.send({ isAdmin: user?.userType === 'admin' });
-})
+  res.send({ isAdmin: user?.userType === "admin" });
+});
 
 // get buyer from database
-app.get('/users/buyer/:email', async (req, res) => {
+app.get("/users/buyer/:email", async (req, res) => {
   const email = req.params.email;
-  const query = { email }
+  const query = { email };
   const user = await userInfo.findOne(query);
-  res.send({ isBuyer: user?.userType === 'buyer' });
-})
+  res.send({ isBuyer: user?.userType === "buyer" });
+});
 
 // get seller from database
-app.get('/users/seller/:email', async (req, res) => {
+app.get("/users/seller/:email", async (req, res) => {
   const email = req.params.email;
-  const query = { email }
+  const query = { email };
   const user = await userInfo.findOne(query);
-  res.send({ isSeller: user?.userType === 'seller' });
-})
+  res.send({ isSeller: user?.userType === "seller" });
+});
 
 app.get("/brands", async (req, res) => {
   try {
@@ -92,6 +108,8 @@ app.get("/Acer/:id", async (req, res) => {
     res.send(result);
   } catch {}
 });
+
+
 
 app.get("/", (req, res) => {
   res.send("Resale Web Server is Running...");
