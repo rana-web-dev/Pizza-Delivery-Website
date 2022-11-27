@@ -22,12 +22,28 @@ const Hp = client.db("usedProductsSell").collection("productsDetails");
 const dell = client.db("usedProductsSell").collection("dell");
 const acer = client.db("usedProductsSell").collection("acer");
 const userInfo = client.db("usedProductsSell").collection("userInfo");
+const products = client.db("usedProductsSell").collection("products");
 
-app.post("/addProducts", async (req, res) => {
-  try {
-    const addProduct = req.body;
-    console(addProduct);
-  } catch {}
+app.delete("/products/:id", async (req, res) => {
+  const id = req.params.id;
+  const query = { _id: ObjectId(id) };
+  const result = await products.deleteOne(query);
+  res.send(result);
+});
+
+// get all products from database
+app.get("/allProducts", async (req, res) => {
+  const query = {};
+  const result = await products.find(query).toArray();
+  res.send(result);
+});
+
+// add product
+app.post("/addProduct", async (req, res) => {
+  const product = req.body;
+  console.log(product);
+  const data = await products.insertOne(product);
+  res.send(data);
 });
 
 // user save on database
@@ -40,13 +56,19 @@ app.post("/users", async (req, res) => {
 });
 
 // get all users from database
-app.get("/users", async(req, res) => {
-    const query = {};
-    const users = await userInfo.find(query).toArray();
-    res.send(users);
-})
+app.get("/users", async (req, res) => {
+  const query = {};
+  const users = await userInfo.find(query).toArray();
+  res.send(users);
+});
 
-// 
+// get one user to delete
+app.delete("/users/:id", async (req, res) => {
+  const id = req.params.id;
+  const query = { _id: ObjectId(id) };
+  const result = await userInfo.deleteOne(query);
+  res.send(result);
+});
 
 // get admin from database
 app.get("/users/admin/:email", async (req, res) => {
@@ -108,8 +130,6 @@ app.get("/Acer/:id", async (req, res) => {
     res.send(result);
   } catch {}
 });
-
-
 
 app.get("/", (req, res) => {
   res.send("Resale Web Server is Running...");
