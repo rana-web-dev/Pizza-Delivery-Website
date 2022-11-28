@@ -23,8 +23,19 @@ const dell = client.db("usedProductsSell").collection("dell");
 const acer = client.db("usedProductsSell").collection("acer");
 const userInfo = client.db("usedProductsSell").collection("userInfo");
 const products = client.db("usedProductsSell").collection("products");
-const bookedProducts = client.db("usedProductsSell").collection("productsBooked");
+const bookedProducts = client
+  .db("usedProductsSell")
+  .collection("productsBooked");
 
+// get book products data from database to delete data
+app.delete("/deleteOrder/:id", async (req, res) => {
+  const id = req.params.id;
+  const query = { _id: ObjectId(id) };
+  const result = await bookedProducts.deleteOne(query);
+  res.send(result);
+});
+
+// get products data from database to delete
 app.delete("/deleteProducts/:id", async (req, res) => {
   const id = req.params.id;
   const query = { _id: ObjectId(id) };
@@ -40,18 +51,18 @@ app.get("/allProducts", async (req, res) => {
 });
 
 // Save book now data to database
-app.post("/bookNow", async(req, res) => {
+app.post("/bookNow", async (req, res) => {
   const bookData = req.body;
-  console.log(bookData)
+  console.log(bookData);
   const booked = await bookedProducts.insertOne(bookData);
   res.send(booked);
-})
+});
 
 // Get book now data from database
-app.get("/bookNow", async(req, res) => {
+app.get("/bookNow", async (req, res) => {
   const result = await bookedProducts.find({}).toArray();
   res.send(result);
-})
+});
 
 // add product
 app.post("/addProduct", async (req, res) => {
