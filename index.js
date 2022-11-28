@@ -47,7 +47,11 @@ app.post("/bookNow", async(req, res) => {
   res.send(booked);
 })
 
-// 
+// Get book now data from database
+app.get("/bookNow", async(req, res) => {
+  const result = await bookedProducts.find({}).toArray();
+  res.send(result);
+})
 
 // add product
 app.post("/addProduct", async (req, res) => {
