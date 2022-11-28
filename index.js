@@ -23,8 +23,9 @@ const dell = client.db("usedProductsSell").collection("dell");
 const acer = client.db("usedProductsSell").collection("acer");
 const userInfo = client.db("usedProductsSell").collection("userInfo");
 const products = client.db("usedProductsSell").collection("products");
+const bookedProducts = client.db("usedProductsSell").collection("productsBooked");
 
-app.delete("/products/:id", async (req, res) => {
+app.delete("/deleteProducts/:id", async (req, res) => {
   const id = req.params.id;
   const query = { _id: ObjectId(id) };
   const result = await products.deleteOne(query);
@@ -38,10 +39,19 @@ app.get("/allProducts", async (req, res) => {
   res.send(result);
 });
 
+// Save book now data to database
+app.post("/bookNow", async(req, res) => {
+  const bookData = req.body;
+  console.log(bookData)
+  const booked = await bookedProducts.insertOne(bookData);
+  res.send(booked);
+})
+
+// 
+
 // add product
 app.post("/addProduct", async (req, res) => {
   const product = req.body;
-  console.log(product);
   const data = await products.insertOne(product);
   res.send(data);
 });
