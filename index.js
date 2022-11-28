@@ -16,6 +16,7 @@ const client = new MongoClient(uri, {
   useUnifiedTopology: true,
   serverApi: ServerApiVersion.v1,
 });
+
 // prettier-ignore
 const usedProductsBrand = client.db("usedProductsSell").collection("brands");
 const Hp = client.db("usedProductsSell").collection("productsDetails");
@@ -23,11 +24,18 @@ const dell = client.db("usedProductsSell").collection("dell");
 const acer = client.db("usedProductsSell").collection("acer");
 const userInfo = client.db("usedProductsSell").collection("userInfo");
 const products = client.db("usedProductsSell").collection("products");
-const bookedProducts = client
-  .db("usedProductsSell")
-  .collection("productsBooked");
+// prettier-ignore
+const bookedProducts = client.db("usedProductsSell").collection("productsBooked");
+const paymentInfo = client.db("usedProductsSell").collection("paymentInfo");
 
-// get book products data from database to delete data
+// Save paymentInfo to database
+app.post("/payment", async(req, res) => {
+  const paymentData = req.body;
+  const result = await paymentInfo.insertOne(paymentData);
+  res.send(result);
+})
+
+// get book products data from database to delete
 app.delete("/deleteOrder/:id", async (req, res) => {
   const id = req.params.id;
   const query = { _id: ObjectId(id) };
